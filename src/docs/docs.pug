@@ -1,0 +1,32 @@
+extends ../layout.pug
+
+block title
+	| API Documentation
+
+
+block content
+	.docs
+		.row
+			.col-xs-9
+				h1 Documentation
+				hr
+				p= sections
+				each val, index in sections.sections
+					h2(id="{{val}}")
+
+					.stats-panel
+						.header(id="stats-player")= index
+						.body
+
+							table
+								thead
+									tr
+								tbody
+									each e in val
+										tr
+											td= e.method
+											td= e.path
+											td= e.summary
+
+			.col-xs-3
+				include sidebar.pug

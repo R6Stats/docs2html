@@ -1,0 +1,376 @@
+@charset "utf-8";
+
+@import
+'vendor';
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #eeeff4 !important;
+    font-family: 'Roboto' !important;
+}
+
+a, a:link, a:visited, a:focus {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+// general navigation
+.nav {
+    ul.nav-items {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        height: 60px;
+
+        > li {
+            float: left;
+            height: 60px;
+            line-height: 30px;
+            font-size: 16px;
+
+            a {
+                display: block;
+                color: white;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+                vertical-align: middle;
+            }
+        }
+
+        .right-item {
+            float: right;
+        }
+    }
+
+
+    .brand-logo img {
+        max-height: 30px;
+        width: auto;
+        float: right;
+        margin-right: 30px;
+    }
+
+
+    .slanted {
+        position: relative;
+        overflow: hidden;
+        z-index: 999;
+        width: 165px;
+    }
+
+    .slanted:after {
+        content: '';
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background-color: #1f2024;
+        -webkit-transform-origin: 100% 0;
+        -ms-transform-origin: 100% 0;
+        transform-origin: 100% 0;
+        -webkit-transform: skew(-25deg);
+        -ms-transform: skew(-25deg);
+        transform: skew(-25deg);
+        z-index: -1;
+    }
+
+    li:not(.brand-logo) a:hover, .navigation .active a, .dropdown div:hover .dropdown div a.active, .dropdown.open {
+        border-bottom: #f5b931 solid 3px;
+    }
+
+}
+
+// top nav
+.navigation {
+    background-color: #292c31;
+    ul.nav-items {
+        background-color: #292c31;
+        li {
+            background-color: #292c31;
+            a:link, a:visited {
+                color: white;
+            }
+            width: initial;
+        }
+    }
+}
+
+.masthead {
+    background-size: cover;
+    background-image: url('/img/screenshots/016_7Be0pvf.jpg');
+    height: 300px;
+    background-repeat: no-repeat;
+    width: 100%;
+    display: table;
+}
+
+.wrapper {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.masthead h1 {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    color: #f5b931;
+    font-size: 55px;
+    text-transform: uppercase;
+    letter-spacing: -2px;
+    font-weight: bold;
+    z-index: 1;
+}
+
+.breadcrumbs {
+    color: white;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.white {
+    color: white;
+}
+@media only screen and (min-width : 320px) {
+
+    .navigation {
+        &.nav-open {
+            .nav-items {
+                position: absolute;
+                overflow: initial !important;
+            }
+        }
+        ul.nav-items {
+            overflow: hidden;
+
+            > li {
+        // float: none;
+        width: 100%;
+    }
+
+    .brand-logo {
+        float: left;
+        width: initial;
+    }
+}
+}
+
+.content {
+    padding: 0;
+}
+
+// .content [class*="col-"]:nth-child(1){
+//     padding-left: 0;
+// }
+
+// .content [class*="col-"]:last-child {
+//     padding-right: 0;
+// }
+
+.content .row {
+    margin: 0 !important;
+}
+
+.sub-nav ul {
+    padding: 0 !important;
+}
+
+.operator {
+    display: none;
+}
+
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (min-width : 480px) {
+
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width : 768px) {
+
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width : 992px) {
+
+    .hamburger {
+        display: none;
+    }
+
+    .nav {
+        ul.nav-items {
+            overflow: hidden;
+            position: initial !important;
+
+
+            > li {
+                width: initial !important;
+                float: left;
+
+            }
+        }
+    }
+
+    .operator {
+        display: block;
+    }
+    .sub-nav ul {
+        padding: 0 150px 0 150px !important;
+    }
+
+    .content {
+        padding: 0 150px 0 150px;
+    }
+
+    .content [class*="col-"]:nth-child(1){
+        padding-left: 0;
+    }
+
+    .content [class*="col-"]:last-child {
+        padding-right: 0;
+    }
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width : 1200px) {
+
+}
+
+.bordered-button {
+    color: #6f6e6e;
+    text-transform: uppercase;
+    border: 1px solid #d0d2d4;
+    padding: 5px 8px;
+    font-weight: normal;
+    font-size: 13px;
+    cursor: pointer;
+
+    &:link {
+        color: #6f6e6e;
+        text-decoration: none;
+    }
+
+    &:hover {
+        color: #6f6e6e;
+        text-decoration: none;
+    }
+
+    &:visited {
+        color: #6f6e6e;
+        text-decoration: none;
+    }
+}
+
+.dropdown {
+    position: static;
+    display: inline-block;
+}
+
+.dropdown-content {
+    list-style-type: none;
+    display: none;
+    position: absolute;
+    background-color: #292c31;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding:0;
+
+    &.right {
+        right: 0;
+    }
+    &.min {
+        min-width: 115px;
+    }
+    z-index: 10000;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    display: block;
+    text-align: left !important;
+}
+
+.open .dropdown-content {
+    display:block;
+}
+
+.nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
+    background-color: #292c31;
+}
+
+
+.hamburger {
+    background:none;
+    position:absolute;
+    top:0;
+    right:0;
+    line-height:45px;
+    padding:0px 15px 0px 15px;
+    color:#fff;
+    border:0;
+    font-size:1.4em;
+    font-weight:bold;
+    cursor:pointer;
+    outline:none;
+    z-index:10000000000000;
+    text-decoration: none;
+    color: white;
+
+    text-decoration: none;
+    color: white;
+}
+
+.hamburger:link, .hamburger:visited, .hamburger:hover {
+    text-decoration: none;
+    color: white;
+}
+
+.stats-panel {
+    background-color: white;
+    border: 1px solid #d0d2d4;
+    text-align: left;
+    vertical-align: middle;
+    border-radius: 1px;
+
+    .body {
+        overflow-x: auto;
+        padding: 15px 15px;
+    }
+
+    .header {
+        border-left: #f5b931 solid 6px;
+        padding: 20px 15px 20px 15px;
+        font-weight: bold;
+        color: black;
+        font-size: 16px;
+        text-transform: uppercase;
+        border-bottom: 1px solid #d0d2d4;
+
+        .overall {
+            font-size: 13px;
+            color: #818284;
+        }
+    }
+
+    .title {
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .value {
+        font-size: 12px;
+        font-weight: bold;
+        float: right;
+    }
+
+    table {
+        width: 100%;
+    }
+
+}

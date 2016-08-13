@@ -1,0 +1,38 @@
+.sidebar {
+	padding: 0;
+	list-style: none;
+
+	> li {
+		&.active > a, > a:hover {
+			padding-left: 18px;
+			color: #f5b931;
+			border-left: 2px solid #f5b931;
+		}
+		> a {
+			padding: 4px 20px;
+			font-size: 16px;
+			font-weight: bold;
+		}
+		> ul {
+			> li {
+				> a {
+					padding: 4px 20px;
+					font-size: 14px;
+					display: block;
+				}
+
+				&.active > a, > a:hover {
+					padding-left: 19px;
+					color: #f5b931;
+					border-left: 1px solid #f5b931;
+				}
+			}
+		}
+	}
+
+	ul {
+		list-style: none;
+	}
+
+
+}

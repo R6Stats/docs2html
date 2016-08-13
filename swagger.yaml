@@ -1,0 +1,526 @@
+swagger: '2.0'
+info:
+  title: R6Stats API
+  version: 0.1.0
+  description: 'R6Stats API Documentation'
+  contact:
+    name: R6Stats Support
+    url: https://r6stats.com
+    email: support@r6stats.com
+produces:
+  - 'application/json'
+consumes:
+  - 'application/json'
+schemes:
+  - https
+host: api.r6stats.com
+basePath: /api/v1
+paths:
+  /users/authenticate:
+    post:
+      tags:
+        - Authentication
+      parameters:
+        - name: body
+          in: body
+          required: true
+          description: 'The payload required to authenticate a user'
+          schema:
+            $ref: '#/definitions/UserAuthentication'
+      responses:
+        '200':
+          description: successfully authenticated
+          schema:
+            $ref: '#/definitions/AuthenticatedPayload'
+  /users/register:
+    post:
+      tags:
+        - Authentication
+      parameters:
+        - name: body
+          in: body
+          required: true
+          description: 'The payload required to register a new user'
+          schema:
+            $ref: '#/definitions/RegistrationPayload'
+      responses:
+        '200':
+          description: successfully registered
+          schema:
+            $ref: '#/definitions/RegisteredPayload'
+  '/database/{section}':
+    get:
+      tags:
+        - Database
+      parameters:
+        - name: section
+          in: path
+          required: true
+          type: string
+          description: 'The database category to retrieve'
+      responses:
+        '200':
+          description: 'The category exists and items are returned'
+          schema:
+            properties:
+              weapons:
+                type: array
+                items:
+                  $ref: '#/definitions/DatabaseItem'
+  '/users/favorites/{ubisoft_id}':
+    put:
+      tags:
+        - Favorites
+      summary: >-
+        Adds a player to the currently logged in user&#39;s list of favorites.
+      parameters:
+        - name: ubisoft_id
+          in: path
+          required: true
+          type: string
+          description: 'The Ubisoft ID of the player to add'
+      responses:
+        '200':
+          description: 'A user was successfully added to the favorites'
+          schema:
+            properties:
+              status:
+                type: string
+                description: 'Describes whether or not favorite was added'
+    delete:
+      tags:
+        - Favorites
+      parameters:
+        - name: ubisoft_id
+          in: path
+          required: true
+          type: string
+          description: 'The Ubisoft ID of the player to remove'
+      responses:
+        '200':
+          description: 'A user was successfully removed from the favorites'
+          schema:
+            properties:
+              status:
+                type: string
+                description: 'Describes whether or not favorite was removed'
+  '/users/favorites':
+    get:
+      tags:
+        - Favorites
+      summary: >-
+        Retrieves a list of favorites for the currently logged in user.
+      responses:
+        '200':
+          description: 'The user is logged in and favorites are returned'
+          schema:
+            properties:
+              players:
+                type: array
+                items:
+                  $ref: '#/definitions/PlayerItem'
+  '/leaderboards/{leaderboard}':
+    get:
+      tags:
+        - Leaderboards
+      parameters:
+        - name: leaderboard
+          in: path
+          type: string
+          description: 'The main category to sort stats by '
+          required: true
+        - name: platform
+          in: query
+          type: string
+          description: 'Only players on this platform are included '
+        - name: sort
+          in: query
+          type: string
+          description: 'The field to sort players by '
+        - name: dir
+          in: query
+          type: string
+          description: 'The direction to sort @sort '
+        - name: page
+          in: query
+          type: number
+          description: 'The page to request '
+        - name: limit
+          in: query
+          type: number
+          description: 'The number of users to display per page '
+      responses:
+        '200':
+          description: 'The leaderboards data is returned and sorted'
+          schema:
+            properties:
+              players:
+                type: array
+                items:
+                  $ref: '#/definitions/PlayerItem'
+  '/users/accounts/{platform}/{username}':
+    put:
+      tags:
+        - Linked Accounts
+      parameters:
+        - name: username
+          in: path
+          required: true
+          type: string
+          description: 'Username on specified platform'
+        - name: platform
+          in: path
+          required: true
+          type: string
+          description: 'Platform for username'
+      responses:
+        '200':
+          description: 'The account has been created and is awaiting verification'
+          schema:
+            $ref: '#/definitions/LinkedAccountStatus'
+
+    get:
+      tags:
+        - Linked Accounts
+      parameters:
+        - name: username
+          in: path
+          required: true
+          type: string
+          description: 'Username on specified platform'
+        - name: platform
+          in: path
+          required: true
+          type: string
+          description: 'Platform for username'
+      responses:
+        '200':
+          description: 'Account successfully verified and linked'
+          schema:
+            $ref: '#/definitions/LinkedAccountStatus'
+        '412':
+          description: 'Still awaiting verification'
+          schema:
+            properties:
+              status:
+                type: string
+    delete:
+      tags:
+        - Linked Accounts
+      parameters:
+        - name: username
+          in: path
+          required: true
+          type: string
+          description: 'Username on specified platform'
+        - name: platform
+          in: path
+          required: true
+          type: string
+          description: 'Platform for username'
+      responses:
+        '200':
+          description: 'Account has been unlinked and deleted'
+          schema:
+            properties:
+              status:
+                type: string
+
+  /users/accounts:
+    get:
+      tags:
+        - Linked Accounts
+      responses:
+        '200':
+          description: 'List of linked accounts is returned'
+          schema:
+            properties:
+              linked_accounts:
+                type: array
+                items:
+                  $ref: '#/definitions/LinkedAccount'
+  '/players/{username}':
+    get:
+      tags:
+        - Players
+      parameters:
+        - name: username
+          in: path
+          required: true
+          type: string
+          description: 'Username of the player'
+        - name: platform
+          in: query
+          required: true
+          type: string
+          description: 'Platform to lookup player on'
+      responses:
+        '200':
+          description: 'The player exists and data is available'
+          schema:
+            $ref: '#/definitions/PlayerItem'
+  '/players/{username}/operators':
+    get:
+      tags:
+        - Players
+      parameters:
+        - name: username
+          in: path
+          required: true
+          type: string
+          description: 'Player username on specified platform'
+        - name: platform
+          in: query
+          required: true
+          type: string
+          description: 'The platform that the player plays on'
+        - name: sort
+          in: query
+          required: true
+          type: string
+          description: 'The field to sort returned operators by'
+        - name: dir
+          in: query
+          required: true
+          type: string
+          description: 'The direction to sort @sort'
+      responses:
+        '200':
+          description: 'Returns the operator stats for a player'
+          schema:
+            properties:
+              operator_records:
+                type: array
+                items:
+                  $ref: '#/definitions/OperatorListItem'
+  '/users/{username}/profile':
+    get:
+      tags:
+        - Users
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: path
+          required: true
+          type: string
+          description: 'Valid and existing username '
+      responses:
+        '200':
+          description: 'Returns the profile for the user'
+          schema:
+            $ref: '#/definitions/AuthenticatedProfile'
+definitions:
+  UserAuthentication:
+    properties:
+      login:
+        type: string
+        description: 'Valid username or email'
+      password:
+        type: string
+        description: 'Valid password for the username or email'
+    required:
+      - login
+      - password
+  AuthenticatedPayload:
+    properties:
+      status:
+        type: string
+        description: 'Status message describing whether or not login succeeded'
+      payload:
+        $ref: '#/definitions/JWTPayload'
+  JWTPayload:
+    properties:
+      token:
+        type: string
+        description: 'JWT Tooken'
+      user:
+        $ref: '#/definitions/JWTUser'
+  JWTUser:
+    properties:
+      role:
+        type: string
+        description: 'User role for authorization'
+      id:
+        type: integer
+        description: 'User database ID'
+      username:
+        type: string
+        description: 'User username'
+  RegistrationPayload:
+    properties:
+      username:
+        type: string
+        description: 'Unique username for new user'
+      email:
+        type: string
+        description: 'Unique email for new user'
+      password:
+        type: string
+        description: 'Password for new user'
+    required:
+      - username
+      - email
+      - password
+  RegisteredPayload:
+    properties:
+      status:
+        type: string
+        description: 'Status message regarding registration'
+  OperatorStatItem:
+    properties:
+      played:
+        type: integer
+        description: 'Number of matches played'
+      wins:
+        type: integer
+        description: 'Number of matches won'
+      losses:
+        type: integer
+        description: 'Number of matches lost'
+      kills:
+        type: integer
+        description: 'Number of players killed'
+      deaths:
+        type: integer
+        description: 'Number of deaths with operator'
+      playtime:
+        type: integer
+        description: 'Time played with operator in minutes'
+      specials:
+        type: object
+        description: 'Various special abilities and their values for operators'
+  OperatorItem:
+    properties:
+      name:
+        type: string
+        description: 'The name of the operator'
+      ctu:
+        type: string
+        description: 'The shorthand name for the CTU the operator is in'
+      images:
+        type: object
+        description: 'The figure and badge for an operator'
+  OperatorListItem:
+    properties:
+      stats:
+        $ref: '#/definitions/OperatorStatItem'
+      operator:
+        $ref: '#/definitions/OperatorItem'
+  PlayerItem:
+    properties:
+      username:
+        type: string
+      platform:
+        type: string
+        description: 'Shorthand for the platform the player plays on'
+      ubisoft_id:
+        type: string
+        description: 'The internal Ubisoft GUID for the player'
+      indexed_at:
+        type: string
+        description: 'A timestamp for when a player was first added to the database'
+      updated_at:
+        type: string
+        description: 'A timestamp for when a player was last updated'
+      stats:
+        $ref: '#/definitions/PlayerStatsItem'
+  PlayerStatsItem:
+    properties:
+      ranked:
+        $ref: '#/definitions/PlayerGamemodeSection'
+      casual:
+        $ref: '#/definitions/PlayerGamemodeSection'
+      overall:
+        $ref: '#/definitions/PlayerOverallSection'
+      progression:
+        $ref: '#/definitions/PlayerProgressionSection'
+  PlayerGamemodeSection:
+    properties:
+      has_played:
+        type: boolean
+        description: 'Whether or not a player has played this gamemode'
+      wins:
+        type: integer
+      losses:
+        type: integer
+      kills:
+        type: integer
+      deaths:
+        type: integer
+      playtime:
+        type: integer
+  PlayerOverallSection:
+    properties:
+      revives:
+        type: integer
+      suicides:
+        type: integer
+      reinforcements_deployed:
+        type: integer
+      barricades_built:
+        type: integer
+      steps_moved:
+        type: integer
+      bullets_fired:
+        type: integer
+      bullets_hit:
+        type: integer
+      headshots:
+        type: integer
+      melee_kills:
+        type: integer
+      penetration_kills:
+        type: integer
+      assists:
+        type: integer
+  PlayerProgressionSection:
+    properties:
+      level:
+        type: integer
+      xp:
+        type: integer
+  DatabaseItem:
+    properties:
+      icon_url:
+        type: string
+        description: 'The URL for the items icon'
+  LinkedAccount:
+    properties:
+      username:
+        type: string
+      platform:
+        type: string
+      verified:
+        type: boolean
+      created_at:
+        type: string
+      token:
+        type: string
+      user:
+        properties:
+          username:
+            type: string
+          admin:
+            type: boolean
+      player:
+        $ref: '#/definitions/PlayerItem'
+  LinkedAccountStatus:
+    properties:
+      linked_account:
+        $ref: '#/definitions/LinkedAccount'
+      meta:
+        properties:
+          status:
+            type: string
+            description: 'String describing current status of account linkage'
+  AuthenticatedProfile:
+    type: object
+    properties:
+      username:
+        type: string
+      role:
+        type: string
+
