@@ -18,6 +18,7 @@ basePath: /api/v1
 paths:
   /users/authenticate:
     post:
+      summary: 'Provided with a login (email or username) and a password, will return a JWT Payload along with User information.'
       tags:
         - Authentication
       parameters:
@@ -34,6 +35,7 @@ paths:
             $ref: '#/definitions/AuthenticatedPayload'
   /users/register:
     post:
+      summary: 'Registers a new user with the provided username, email, and password. Will return a success status if all fields are unique and valid. JWT payload is not returned and a authenticate request must be made in order to sign in.'
       tags:
         - Authentication
       parameters:
@@ -50,6 +52,7 @@ paths:
             $ref: '#/definitions/RegisteredPayload'
   '/database/{section}':
     get:
+      summary: 'Returns the items that are tagged with the specified section. These items are general pieces of data that are found within the Rainbow Six game. Sections include: operators, weapons, and gadgets'
       tags:
         - Database
       parameters:
@@ -72,7 +75,7 @@ paths:
       tags:
         - Favorites
       summary: >-
-        Adds a player to the currently logged in user&#39;s list of favorites.
+        Adds a player to the currently logged in user's list of favorites. The player's Ubisoft ID is used to identify players for favoriting. The ID can be retrieved from any request that returns a PlayerItem.
       parameters:
         - name: ubisoft_id
           in: path
@@ -81,13 +84,15 @@ paths:
           description: 'The Ubisoft ID of the player to add'
       responses:
         '200':
-          description: 'A user was successfully added to the favorites'
+          description: 'The player was successfully added to the favorites'
           schema:
             properties:
               status:
                 type: string
                 description: 'Describes whether or not favorite was added'
     delete:
+      summary: >-
+        Removes the player with the specified ubisoft_id from the currently logged in user's favorites.
       tags:
         - Favorites
       parameters:
@@ -109,7 +114,7 @@ paths:
       tags:
         - Favorites
       summary: >-
-        Retrieves a list of favorites for the currently logged in user.
+        Retrieves a list of favorites for the currently logged in user. The list of players is returned as an array of PlayerItem
       responses:
         '200':
           description: 'The user is logged in and favorites are returned'
@@ -121,34 +126,48 @@ paths:
                   $ref: '#/definitions/PlayerItem'
   '/leaderboards/{leaderboard}':
     get:
+      summary: >-
+        Queries the leaderboards based on the set of parameters provided. The specific leaderboard must be specified and may be casual, ranked, or general. This will set the primary category, and then the sorting can be further narrowed by using the sort query param. The direction that the parameter is sorted can be set with the sort query parameter. If specified, only players from the platform parameter will be included in the leaderboards. Platforms are xone (Xbox One), ps4 (Playstation 4), and uplay (Uplay, Steam, PC). all may also be specified for semantic purposes.
       tags:
         - Leaderboards
       parameters:
         - name: leaderboard
           in: path
           type: string
-          description: 'The main category to sort stats by '
+          description: 'The primary category to sort stats by. If ranked is used, only players that have participated in a ranked match will be included in the response'
           required: true
         - name: platform
           in: query
           type: string
-          description: 'Only players on this platform are included '
+          default: 'all'
+          description: 'The platform that the response will be limited to. Use xone, ps4, uplay, or all.'
+          enum:
+            - xone
+            - ps4
+            - uplay
+            - all
         - name: sort
           in: query
           type: string
-          description: 'The field to sort players by '
+          description: 'The specified field to sort the returned users by.'
         - name: dir
           in: query
           type: string
-          description: 'The direction to sort @sort '
+          description: 'The direction to sort the sub category by. Either asc for ascending or desc for descending.'
+          enum:
+            - desc
+            - asc
         - name: page
           in: query
-          type: number
-          description: 'The page to request '
+          type: integer
+          description: 'The page number to request. Requesting an invalid or non-existent page number will use page 1 instead.'
         - name: limit
           in: query
-          type: number
-          description: 'The number of users to display per page '
+          type: integer
+          default: 25
+          minimum: 1
+          maximum: 30
+          description: 'The number of users to display per page'
       responses:
         '200':
           description: 'The leaderboards data is returned and sorted'
@@ -160,6 +179,8 @@ paths:
                   $ref: '#/definitions/PlayerItem'
   '/users/accounts/{platform}/{username}':
     put:
+      summary: >-
+        If successful, the API will create a link between the currently logged in user and the account that exists on the specified platform with the specified username. This then needs to be verfified with the provided token to make the link official. The token can be messaged to the R6Stats user on either Playstation or Xbox via the messaging system. The user may then make a GET request with the same URL to check whether or not the message was received, and then the link will be complete.
       tags:
         - Linked Accounts
       parameters:
@@ -167,12 +188,12 @@ paths:
           in: path
           required: true
           type: string
-          description: 'Username on specified platform'
+          description: 'Username of the account to link'
         - name: platform
           in: path
           required: true
           type: string
-          description: 'Platform for username'
+          description: 'Platform that the account exists on'
       responses:
         '200':
           description: 'The account has been created and is awaiting verification'
@@ -187,12 +208,12 @@ paths:
           in: path
           required: true
           type: string
-          description: 'Username on specified platform'
+          description: 'Username of the account to check'
         - name: platform
           in: path
           required: true
           type: string
-          description: 'Platform for username'
+          description: 'Platform that the account exists on'
       responses:
         '200':
           description: 'Account successfully verified and linked'
@@ -220,7 +241,7 @@ paths:
           description: 'Platform for username'
       responses:
         '200':
-          description: 'Account has been unlinked and deleted'
+          description: 'Account has been unlinked and may be reused'
           schema:
             properties:
               status:
@@ -228,6 +249,8 @@ paths:
 
   /users/accounts:
     get:
+      summary: >-
+        Requests a list of the currently logged in user's linked accounts. Will return an empty array if no accounts have been linked.
       tags:
         - Linked Accounts
       responses:
@@ -240,6 +263,8 @@ paths:
                 items:
                   $ref: '#/definitions/LinkedAccount'
   '/players/{username}':
+    summary: >-
+      Returns the stats for the player with the specified username that exists on the specified platform. Stats and other information is returned in the format of a PlayerItem.
     get:
       tags:
         - Players
@@ -260,6 +285,8 @@ paths:
           schema:
             $ref: '#/definitions/PlayerItem'
   '/players/{username}/operators':
+    summary: >-
+      Returns a list of operator records in the form of OperatorListItem. These items include the player's stats with that operator along with the bio and other useful information about the actual operator.
     get:
       tags:
         - Players
@@ -294,6 +321,8 @@ paths:
                 items:
                   $ref: '#/definitions/OperatorListItem'
   '/users/{username}/profile':
+    summary: >-
+      Returns information regarding the user with the specified username. The data returned will differ depending on the role of the user and whether or not the user requested is the same as the currently logged in user.
     get:
       tags:
         - Users
@@ -309,7 +338,7 @@ paths:
           description: 'Valid and existing username '
       responses:
         '200':
-          description: 'Returns the profile for the user'
+          description: 'The user is valid and the profile is returned'
           schema:
             $ref: '#/definitions/AuthenticatedProfile'
 definitions:
