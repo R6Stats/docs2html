@@ -177,7 +177,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/definitions/PlayerItem'
-  '/leaderboards/{gamemode}/find':
+  '/leaderboards/{leaderboard}/find':
     get:
       summary: >-
         Search for a player on the leaderboards and returns the page as an array of PlayerItems, similar to how the leaderboards data is returned.
@@ -228,11 +228,11 @@ paths:
             properties:
               players:
                 type: array
-                  items:
+                items:
                   $ref: '#/definitions/PlayerItem'
         '404':
           description: 'The player does not exist on the leaderboard specified. This may occur if they have not been indexed, they have not played the specified gamemode, or the parameters are not valid.'
-          sechema:
+          schema:
             properties:
               status:
                 type: string
@@ -322,9 +322,9 @@ paths:
                 items:
                   $ref: '#/definitions/LinkedAccount'
   '/players/{username}':
-    summary: >-
-      Returns the stats for the player with the specified username that exists on the specified platform. Stats and other information is returned in the format of a PlayerItem.
     get:
+      summary: >-
+        Returns the stats for the player with the specified username that exists on the specified platform. Stats and other information is returned in the format of a PlayerItem.
       tags:
         - Players
       parameters:
@@ -344,9 +344,9 @@ paths:
           schema:
             $ref: '#/definitions/PlayerItem'
   '/players/{username}/operators':
-    summary: >-
-      Returns a list of operator records in the form of OperatorListItem. These items include the player's stats with that operator along with the bio and other useful information about the actual operator.
     get:
+      summary: >-
+        Returns a list of operator records in the form of OperatorListItem. These items include the player's stats with that operator along with the bio and other useful information about the actual operator.
       tags:
         - Players
       parameters:
@@ -380,9 +380,9 @@ paths:
                 items:
                   $ref: '#/definitions/OperatorListItem'
   '/users/{username}/profile':
-    summary: >-
-      Returns information regarding the user with the specified username. The data returned will differ depending on the role of the user and whether or not the user requested is the same as the currently logged in user.
     get:
+      summary: >-
+        Returns information regarding the user with the specified username. The data returned will differ depending on the role of the user and whether or not the user requested is the same as the currently logged in user.
       tags:
         - Users
       consumes:
