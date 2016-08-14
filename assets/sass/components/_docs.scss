@@ -6,4 +6,56 @@
 	h1 {
 		margin: 0;
 	}
+
+	.api-item {
+		font-size: 14px;
+		table {
+			width: 100%;
+		}
+
+		.method {
+			text-transform: uppercase;
+			text-align: right;
+			width: 15%;
+			font-weight: bold;
+		}
+
+		.get {
+			color: #42a342;
+		}
+
+		.post {
+			color: #3088de;
+		}
+
+		.put {
+			color: #e7c033;
+		}
+
+		.delete {
+			color: #f32c2c;
+		}
+
+		.path {
+			width: 25%;
+		}
+
+		.summary {
+			width: 60%;
+		}
+
+		td {
+			padding: 15px;
+		}
+
+		tbody tr:hover {
+			background-color: #eee;
+			background: #eee;
+			cursor: pointer;
+		}
+
+		tr:not(:last-child) {
+			border-bottom: 1px solid #ddd;
+		}
+	}
 }

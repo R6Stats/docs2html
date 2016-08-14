@@ -10,23 +10,33 @@ block content
 			.col-xs-9
 				h1 Documentation
 				hr
-				p= sections
 				each val, index in sections.sections
 					h2(id="{{val}}")
 
 					.stats-panel
 						.header(id="stats-player")= index
-						.body
+						each e in val
+							.modal.fade(tabindex='-1', id='api_modal_' + e.method + e.path.replace(/\/|}|{/g, ''))
+								.modal-dialog
+									.modal-content
+										.modal-header
+											button.close(type='button', data-dismiss='modal')
+												span ×
+											h4.modal-title=e.path
+										.modal-body
+											p
+												:markdown-it=e.description
 
-							table
+						.body
+							table.api-item
 								thead
 									tr
 								tbody
 									each e in val
-										tr
-											td= e.method
-											td= e.path
-											td= e.summary
+										tr(data-toggle="modal", data-target="#api_modal_" + e.method + e.path.replace(/\/|}|{/g, ''))
+											td(class="method " + e.method)= e.method
+											td.path= e.path
+											td.summary= e.summary
 
 			.col-xs-3
 				include sidebar.pug
