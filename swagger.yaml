@@ -18,7 +18,7 @@ basePath: /api/v1
 paths:
   /users/authenticate:
     post:
-      summary: 'Provided with a login (email or username) and a password, will return a JWT Payload along with User information.'
+      description: 'Provided with a *login* (email or username) and a *password*, will return a JWT Payload along with User information.'
       tags:
         - Authentication
       parameters:
@@ -35,7 +35,7 @@ paths:
             $ref: '#/definitions/AuthenticatedPayload'
   /users/register:
     post:
-      summary: 'Registers a new user with the provided username, email, and password. Will return a success status if all fields are unique and valid. JWT payload is not returned and a authenticate request must be made in order to sign in.'
+      description: 'Registers a new user with the *username*, *email*, and *password*. Will return a success status if all fields are unique and valid. JWT payload is **not** returned and a authenticate request must be made in order to sign in.'
       tags:
         - Authentication
       parameters:
@@ -52,7 +52,7 @@ paths:
             $ref: '#/definitions/RegisteredPayload'
   '/database/{section}':
     get:
-      summary: 'Returns the items that are tagged with the specified section. These items are general pieces of data that are found within the Rainbow Six game. Sections include: operators, weapons, and gadgets'
+      description: 'Returns the items that are tagged with the *section*. These items are general pieces of data that are found within the Rainbow Six game. Sections include: *operators*, *weapons*, and *gadgets*'
       tags:
         - Database
       parameters:
@@ -60,6 +60,10 @@ paths:
           in: path
           required: true
           type: string
+          enum:
+            - operators
+            - weapons
+            - gadgets
           description: 'The database category to retrieve'
       responses:
         '200':
@@ -74,7 +78,7 @@ paths:
     put:
       tags:
         - Favorites
-      summary: >-
+      description: >-
         Adds a player to the currently logged in user's list of favorites. The player's Ubisoft ID is used to identify players for favoriting. The ID can be retrieved from any request that returns a PlayerItem.
       parameters:
         - name: ubisoft_id
@@ -91,8 +95,8 @@ paths:
                 type: string
                 description: 'Describes whether or not favorite was added'
     delete:
-      summary: >-
-        Removes the player with the specified ubisoft_id from the currently logged in user's favorites.
+      description: >-
+        Removes the player with the *ubisoft_id* from the currently logged in user's favorites.
       tags:
         - Favorites
       parameters:
@@ -114,7 +118,7 @@ paths:
       tags:
         - Favorites
       summary: >-
-        Retrieves a list of favorites for the currently logged in user. The list of players is returned as an array of PlayerItem
+        Retrieves a list of favorites for the currently logged in user. The list of players is returned as an array of *PlayerItem*
       responses:
         '200':
           description: 'The user is logged in and favorites are returned'
@@ -127,7 +131,7 @@ paths:
   '/leaderboards/{leaderboard}':
     get:
       summary: >-
-        Queries the leaderboards based on the set of parameters provided. The specific leaderboard must be specified and may be casual, ranked, or general. This will set the primary category, and then the sorting can be further narrowed by using the sort query param. The direction that the parameter is sorted can be set with the sort query parameter. If specified, only players from the platform parameter will be included in the leaderboards. Platforms are xone (Xbox One), ps4 (Playstation 4), and uplay (Uplay, Steam, PC). all may also be specified for semantic purposes.
+        Queries the leaderboards based on the set of parameters provided. The specific leaderboard must be specified and may be **casual**, **ranked**, or **general**. This will set the primary category, and then the sorting can be further narrowed by using the sort query param. The direction that the parameter is sorted can be set with the sort query parameter. If specified, only players from the platform parameter will be included in the leaderboards. Platforms are **xone** *(Xbox One)*, **ps4** *(Playstation 4)*, and **uplay** *(Uplay, Steam, PC)*. all may also be specified for semantic purposes.
       tags:
         - Leaderboards
       parameters:
@@ -135,6 +139,10 @@ paths:
           in: path
           type: string
           description: 'The primary category to sort stats by. If ranked is used, only players that have participated in a ranked match will be included in the response'
+          enum:
+            - casual
+            - ranked
+            - general
           required: true
         - name: platform
           in: query
@@ -179,8 +187,8 @@ paths:
                   $ref: '#/definitions/PlayerItem'
   '/leaderboards/{leaderboard}/find':
     get:
-      summary: >-
-        Search for a player on the leaderboards and returns the page as an array of PlayerItems, similar to how the leaderboards data is returned.
+      desscription: >-
+        Search for a player on the leaderboards and returns the page as an array of *PlayerItem*s, similar to how the leaderboards data is returned.
       tags:
         - Leaderboards
       parameters:
@@ -188,6 +196,10 @@ paths:
           in: path
           type: string
           description: 'The primary category to sort stats by. If ranked is used, only players that have participated in a ranked match will be included in the response'
+          enum:
+            - casual
+            - ranked
+            - general
           required: true
         - name: platform
           in: query
@@ -199,6 +211,15 @@ paths:
             - ps4
             - uplay
             - all
+        - name: player_platform
+          in: query
+          type: string
+          description: 'The platform that the player exists on. This is separate from the *platform* parameter due to the possibility that the platform parameter is not necessary, and allows for *all* platforms to be queried.'
+          required: true
+          enum:
+            - xone
+            - ps4
+            - uplay
         - name: sort
           in: query
           type: string
@@ -223,7 +244,7 @@ paths:
           description: 'The number of users to display per page'
       responses:
         '200':
-          description: 'The player exists on the specified leaderboard and the page that they are located on is returned.'
+          description: 'The player exists on the *leaderboard* and the page that they are located on is returned.'
           schema:
             properties:
               players:
@@ -231,15 +252,15 @@ paths:
                 items:
                   $ref: '#/definitions/PlayerItem'
         '404':
-          description: 'The player does not exist on the leaderboard specified. This may occur if they have not been indexed, they have not played the specified gamemode, or the parameters are not valid.'
+          description: 'The player does not exist on the *leaderboard*. This may occur if they have not been indexed, they have not played the *gamemode*, or the parameters are not valid.'
           schema:
             properties:
               status:
                 type: string
   '/users/accounts/{platform}/{username}':
     put:
-      summary: >-
-        If successful, the API will create a link between the currently logged in user and the account that exists on the specified platform with the specified username. This then needs to be verfified with the provided token to make the link official. The token can be messaged to the R6Stats user on either Playstation or Xbox via the messaging system. The user may then make a GET request with the same URL to check whether or not the message was received, and then the link will be complete.
+      description: >-
+        If successful, the API will create a link between the currently logged in user and the account that exists on the *platform* with the *username*. This then needs to be verfified with the provided token to make the link official. The token can be messaged to the R6Stats user on either Playstation or Xbox via the messaging system. The user may then make a GET request to the same URL to check whether or not the message was received, and then the link will be complete.
       tags:
         - Linked Accounts
       parameters:
@@ -258,8 +279,8 @@ paths:
           description: 'The account has been created and is awaiting verification'
           schema:
             $ref: '#/definitions/LinkedAccountStatus'
-
     get:
+      description: 'Returns a list of *LinkedAccount*s'
       tags:
         - Linked Accounts
       parameters:
@@ -285,6 +306,7 @@ paths:
               status:
                 type: string
     delete:
+      description: 'Unlinks and deletes the account with the *username* on the *platform*'
       tags:
         - Linked Accounts
       parameters:
