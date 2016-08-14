@@ -117,7 +117,7 @@ paths:
     get:
       tags:
         - Favorites
-      summary: >-
+      description: >-
         Retrieves a list of favorites for the currently logged in user. The list of players is returned as an array of *PlayerItem*
       responses:
         '200':
@@ -130,8 +130,25 @@ paths:
                   $ref: '#/definitions/PlayerItem'
   '/leaderboards/{leaderboard}':
     get:
-      summary: >-
-        Queries the leaderboards based on the set of parameters provided. The specific leaderboard must be specified and may be **casual**, **ranked**, or **general**. This will set the primary category, and then the sorting can be further narrowed by using the sort query param. The direction that the parameter is sorted can be set with the sort query parameter. If specified, only players from the platform parameter will be included in the leaderboards. Platforms are **xone** *(Xbox One)*, **ps4** *(Playstation 4)*, and **uplay** *(Uplay, Steam, PC)*. all may also be specified for semantic purposes.
+      description: >-
+        Queries the leaderboards based on the set of parameters provided. 
+        
+        
+        The specific leaderboard must be specified and may be **casual**, **ranked**, or **general**. This will set the primary category, and then the sorting can be further narrowed by using the sort query param. 
+        
+        
+        The direction that the parameter is sorted can be set with the *sort* query parameter. 
+        
+        
+        If specified, only players from the *platform* parameter will be included in the leaderboards. Platforms are **xone** *(Xbox One)*, **ps4** *(Playstation 4)*, and **uplay** *(Uplay, Steam, PC)*. *all* may also be specified for semantic purposes.
+        
+        
+        
+          | Leaderboard | Parameters |
+          |------ | ------ |
+          |Casual | kills, deaths, wins, losses, playtime |
+          |Ranked | kills, deaths, wins, losses, playtime |
+          |General | revives, suicides, barricades, reinforcements, melee_kills, penetration_kills, bullets_fired, bullets_hit, headshots, assists, steps, experience, level |
       tags:
         - Leaderboards
       parameters:
@@ -185,9 +202,11 @@ paths:
                 type: array
                 items:
                   $ref: '#/definitions/PlayerItem'
+              meta:
+                $ref: '#/definitions/PaginatedMeta'
   '/leaderboards/{leaderboard}/find':
     get:
-      desscription: >-
+      description: >-
         Search for a player on the leaderboards and returns the page as an array of *PlayerItem*s, similar to how the leaderboards data is returned.
       tags:
         - Leaderboards
@@ -251,6 +270,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/definitions/PlayerItem'
+              meta:
+                $ref: '#/definitions/PaginatedMeta'
         '404':
           description: 'The player does not exist on the *leaderboard*. This may occur if they have not been indexed, they have not played the *gamemode*, or the parameters are not valid.'
           schema:
@@ -330,7 +351,7 @@ paths:
 
   /users/accounts:
     get:
-      summary: >-
+      description: >-
         Requests a list of the currently logged in user's linked accounts. Will return an empty array if no accounts have been linked.
       tags:
         - Linked Accounts
@@ -345,7 +366,7 @@ paths:
                   $ref: '#/definitions/LinkedAccount'
   '/players/{username}':
     get:
-      summary: >-
+      description: >-
         Returns the stats for the player with the specified username that exists on the specified platform. Stats and other information is returned in the format of a PlayerItem.
       tags:
         - Players
@@ -367,7 +388,7 @@ paths:
             $ref: '#/definitions/PlayerItem'
   '/players/{username}/operators':
     get:
-      summary: >-
+      description: >-
         Returns a list of operator records in the form of OperatorListItem. These items include the player's stats with that operator along with the bio and other useful information about the actual operator.
       tags:
         - Players
@@ -403,7 +424,7 @@ paths:
                   $ref: '#/definitions/OperatorListItem'
   '/users/{username}/profile':
     get:
-      summary: >-
+      description: >-
         Returns information regarding the user with the specified username. The data returned will differ depending on the role of the user and whether or not the user requested is the same as the currently logged in user.
       tags:
         - Users
@@ -633,4 +654,17 @@ definitions:
         type: string
       role:
         type: string
+  PaginatedMeta:
+    type: object
+    properties:
+      current_page:
+        type: integer
+      next_page:
+        type: integer
+      prev_page:
+        type: integer
+      total_pages:
+        type: integer
+      total_count:
+        type: integer
 
