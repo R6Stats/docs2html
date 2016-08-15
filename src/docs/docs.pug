@@ -24,8 +24,7 @@ block content
 												span ×
 											h4.modal-title=e.path
 										.modal-body
-											p
-												:markdown-it=e.description
+											p!= md.render(e.description)
 
 						.body
 							table.api-item

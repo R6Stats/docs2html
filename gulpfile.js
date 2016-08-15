@@ -16,12 +16,14 @@
     karma   = require('karma').server,
     exists  = require('path-exists'),
     pug     = require('gulp-pug'),
+    md = require('markdown-it')(),
     swagger = require('./swagger');
 
     var locals;
     swagger.getSections(function(data) {
         locals = {sections: data};
     });
+    // pug.filters.md = md;
 
     var watchFiles = [
         // Templates
@@ -80,7 +82,7 @@
 
         return gulp.src('src/**/*.pug')
         .pipe(pug({
-            locals: {sections: locals}
+            locals: {sections: locals, md: md},
         }))
         .pipe(gulp.dest('build/'));
 
