@@ -122,7 +122,7 @@ paths:
                 description: 'Describes whether or not favorite was removed'
   '/users/favorites':
     get:
-      summary: ->
+      summary: >-
         Get a list of the currently logged in user's favorites
       tags:
         - Favorites
