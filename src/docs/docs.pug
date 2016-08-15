@@ -14,7 +14,7 @@ block content
 					h2(id="{{val}}")
 
 					.stats-panel
-						.header(id="stats-player")= index
+						.header(id="section_" + index)= index
 						each e in val
 							.modal.fade(tabindex='-1', id='api_modal_' + e.method + e.path.replace(/\/|}|{/g, ''))
 								.modal-dialog
@@ -25,6 +25,25 @@ block content
 											h4.modal-title=e.path
 										.modal-body
 											p!= md.render(e.description)
+											
+											ul.nav-tabs.nav
+												li.active
+													a(href="#request", data-toggle="tab") Request
+												li
+													a(href="#response", data-toggle="tab") Response
+											.tab-content
+												#request.tab-pane.fade.active
+													p= e.path
+													if e.parameters
+														h2 URI Parameters
+														each p, index in e.parameters
+															if p.in == 'path'
+																h3= p.name
+																p= p.description
+														
+														
+												#response.tab-pane.fade
+												
 
 						.body
 							table.api-item
@@ -32,7 +51,7 @@ block content
 									tr
 								tbody
 									each e in val
-										tr(data-toggle="modal", data-target="#api_modal_" + e.method + e.path.replace(/\/|}|{/g, ''))
+										tr(data-toggle="modal", data-target="#api_modal_" + e.method + e.path.replace(/\/|}|{/g, ''), id="method_" + e.method + e.path.replace(/\/|}|{/g, ''))
 											td(class="method " + e.method)= e.method
 											td.path= e.path
 											td.summary= e.summary

@@ -26,6 +26,9 @@
     // pug.filters.md = md;
 
     var watchFiles = [
+        // Data
+        'swagger.yaml',
+        
         // Templates
         'src/**/*.pug',
 
