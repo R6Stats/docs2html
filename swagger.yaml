@@ -18,6 +18,7 @@ basePath: /api/v1
 paths:
   /users/authenticate:
     post:
+      summary: 'Authenticate a user with a login and password'
       description: 'Provided with a *login* (email or username) and a *password*, will return a JWT Payload along with User information.'
       tags:
         - Authentication
@@ -35,6 +36,7 @@ paths:
             $ref: '#/definitions/AuthenticatedPayload'
   /users/register:
     post:
+      summary: 'Register a new user'
       description: 'Registers a new user with the *username*, *email*, and *password*. Will return a success status if all fields are unique and valid. JWT payload is **not** returned and a authenticate request must be made in order to sign in.'
       tags:
         - Authentication
@@ -52,6 +54,7 @@ paths:
             $ref: '#/definitions/RegisteredPayload'
   '/database/{section}':
     get:
+      summary: 'Return a list of items from the database'
       description: 'Returns the items that are tagged with the *section*. These items are general pieces of data that are found within the Rainbow Six game. Sections include: *operators*, *weapons*, and *gadgets*'
       tags:
         - Database
@@ -78,6 +81,7 @@ paths:
     put:
       tags:
         - Favorites
+      summary: 'Add a player to the currently logged in user\'s favorites'
       description: >-
         Adds a player to the currently logged in user's list of favorites. The player's Ubisoft ID is used to identify players for favoriting. The ID can be retrieved from any request that returns a PlayerItem.
       parameters:
@@ -95,6 +99,7 @@ paths:
                 type: string
                 description: 'Describes whether or not favorite was added'
     delete:
+      summary: 'Removes a player from the currently logged in user\'s favorites'
       description: >-
         Removes the player with the *ubisoft_id* from the currently logged in user's favorites.
       tags:
@@ -115,6 +120,7 @@ paths:
                 description: 'Describes whether or not favorite was removed'
   '/users/favorites':
     get:
+      summary: 'Get a list of the currently logged in user\'s favorites'
       tags:
         - Favorites
       description: >-
@@ -130,6 +136,7 @@ paths:
                   $ref: '#/definitions/PlayerItem'
   '/leaderboards/{leaderboard}':
     get:
+      summary: 'Get a list of players sorted with the specified parameters'
       description: >-
         Queries the leaderboards based on the set of parameters provided. 
         
@@ -206,6 +213,7 @@ paths:
                 $ref: '#/definitions/PaginatedMeta'
   '/leaderboards/{leaderboard}/find':
     get:
+      summary: 'Find a player on the leaderboards'
       description: >-
         Search for a player on the leaderboards and returns the page as an array of *PlayerItem*s, similar to how the leaderboards data is returned.
       tags:
@@ -280,6 +288,7 @@ paths:
                 type: string
   '/users/accounts/{platform}/{username}':
     put:
+      summary: 'Link a player\'s PSN/Xbox account to R6Stats'
       description: >-
         If successful, the API will create a link between the currently logged in user and the account that exists on the *platform* with the *username*. This then needs to be verfified with the provided token to make the link official. The token can be messaged to the R6Stats user on either Playstation or Xbox via the messaging system. The user may then make a GET request to the same URL to check whether or not the message was received, and then the link will be complete.
       tags:
@@ -301,6 +310,7 @@ paths:
           schema:
             $ref: '#/definitions/LinkedAccountStatus'
     get:
+      summary: 'Get a list of the user\'s linked accounts'
       description: 'Returns a list of *LinkedAccount*s'
       tags:
         - Linked Accounts
@@ -327,6 +337,7 @@ paths:
               status:
                 type: string
     delete:
+      summary: 'Unlink a user\'s account from R6Stats'
       description: 'Unlinks and deletes the account with the *username* on the *platform*'
       tags:
         - Linked Accounts
@@ -351,6 +362,7 @@ paths:
 
   /users/accounts:
     get:
+      summary: 'Get a list of the user\'s linked accounts'
       description: >-
         Requests a list of the currently logged in user's linked accounts. Will return an empty array if no accounts have been linked.
       tags:
@@ -366,6 +378,7 @@ paths:
                   $ref: '#/definitions/LinkedAccount'
   '/players/{username}':
     get:
+      summary: 'Get stats and info for a Rainbow Six player'
       description: >-
         Returns the stats for the player with the specified username that exists on the specified platform. Stats and other information is returned in the format of a PlayerItem.
       tags:
@@ -388,6 +401,7 @@ paths:
             $ref: '#/definitions/PlayerItem'
   '/players/{username}/operators':
     get:
+      summary: 'Get operator stats for a Rainbow Six player'
       description: >-
         Returns a list of operator records in the form of OperatorListItem. These items include the player's stats with that operator along with the bio and other useful information about the actual operator.
       tags:
@@ -424,6 +438,7 @@ paths:
                   $ref: '#/definitions/OperatorListItem'
   '/users/{username}/profile':
     get:
+      summary: 'Get profile information for a user'
       description: >-
         Returns information regarding the user with the specified username. The data returned will differ depending on the role of the user and whether or not the user requested is the same as the currently logged in user.
       tags:
