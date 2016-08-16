@@ -294,7 +294,13 @@ paths:
       summary: >-
         Link a player's PSN/Xbox account to R6Stats
       description: >-
-        If successful, the API will create a link between the currently logged in user and the account that exists on the *platform* with the *username*. This then needs to be verfified with the provided token to make the link official. The token can be messaged to the R6Stats user on either Playstation or Xbox via the messaging system. The user may then make a GET request to the same URL to check whether or not the message was received, and then the link will be complete.
+        If successful, the API will create a link between the currently logged in user and the account that exists on the *platform* with the *username*. 
+        
+        
+        This then needs to be verfified with the provided token to make the link official. The token can be messaged to the R6Stats user on either Playstation or Xbox via the messaging system. 
+        
+        
+        The user may then make a GET request to the same URL to check whether or not the message was received, and then the link will be complete.
       tags:
         - Linked Accounts
       parameters:
