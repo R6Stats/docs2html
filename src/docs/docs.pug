@@ -1,0 +1,66 @@
+extends ../layout.pug
+
+block title
+	| API Documentation
+
+
+block content
+	.docs
+		.row
+			.col-xs-9
+				h1 Documentation
+				hr
+				each val, index in sections.sections
+					h2(id="{{val}}")
+
+					.stats-panel
+						.header(id="section_" + index)= index
+						each e in val
+							.modal.fade(tabindex='-1', id='api_modal_' + e.method + e.path.replace(/\/|}|{/g, ''))
+								.modal-dialog
+									.modal-content
+										.modal-header
+											button.close(type='button', data-dismiss='modal')
+												span ×
+											h4.modal-title=e.path
+										.modal-body
+											p!= md.render(e.description)
+
+											ul.nav-tabs.nav(data-tabs="tabs", id="tabs")
+												li.active
+													a(href="#request", data-toggle="tab") Request
+												li
+													a(href="#response", data-toggle="tab") Response
+											.tab-content
+												#request.tab-pane.active
+													if e.parameters
+														h2 URI Parameters
+														each p, index in e.parameters
+															if p.in == 'path'
+																h3= p.name
+																p= p.description
+														h2 Query Parameters
+														each p, index in e.parameters
+															if p.in == 'query'
+																h3= p.name
+																p= p.description
+
+
+												#response.tab-pane
+													each resp, name in e.responses
+														h2= name
+
+
+						.body
+							table.api-item
+								thead
+									tr
+								tbody
+									each e in val
+										tr(data-toggle="modal", data-target="#api_modal_" + e.method + e.path.replace(/\/|}|{/g, ''), id="method_" + e.method + e.path.replace(/\/|}|{/g, ''))
+											td(class="method " + e.method)= e.method
+											td.path= e.path
+											td.summary= e.summary
+
+			.col-xs-3
+				include sidebar.pug
