@@ -4,7 +4,7 @@ var ex = {};
 
 ex.getSections = function(callback) {
 	SwaggerParser.validate("swagger.yaml", function(err, api) {
-		console.log(err, api)
+		// console.log(err, api)
 		var sections = {};
 		var keys = Object.keys(api.paths);
 		for (var path of keys) {
@@ -13,7 +13,7 @@ ex.getSections = function(callback) {
 				var i = api.paths[path][x];
 				i.path = path;
 				i.method = x;
-				console.log(i);
+				// console.log(i);
 				var tags = i['tags'];
 				var main = tags[0];
 				if (!sections[main]) {
@@ -22,7 +22,7 @@ ex.getSections = function(callback) {
 				sections[main].push(i);
 			}
 		}
-		console.log(sections)
+		// console.log(sections)
 		callback(sections);
 	});
 
