@@ -1,0 +1,10 @@
+RewriteEngine On
+
+# If the request resource exists then access it
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -f [OR]
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -d
+RewriteRule ^ - [L]
+
+# If the requested resource doesn't exist, use
+# index.html to allow Angular to take care of routing
+RewriteRule ^ index.html
