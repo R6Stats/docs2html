@@ -13,7 +13,6 @@
     cssnano = require('gulp-cssnano'),
     jshint  = require('gulp-jshint'),
     del     = require('del'),
-    karma   = require('karma').server,
     exists  = require('path-exists'),
     pug     = require('gulp-pug'),
     md = require('markdown-it')(),
