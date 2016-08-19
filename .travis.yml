@@ -3,5 +3,5 @@ node_js:
   - "5.11"
 deploy:
   provider: script
-  script: deploy.sh
+  script: "./deploy.sh"
   skip_cleanup: true
