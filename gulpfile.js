@@ -23,7 +23,6 @@
     swagger.getSections(function(data) {
         locals = {sections: data};
     });
-    // pug.filters.md = md;
 
     var watchFiles = [
         // Data

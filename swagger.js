@@ -4,6 +4,10 @@ var ex = {};
 
 ex.getSections = function(callback) {
 	SwaggerParser.validate("swagger.yaml", function(err, api) {
+		if (err) {
+			console.warn("Error parsing API");
+			return {};
+		}
 		// console.log(err, api)
 		var sections = {};
 		var keys = Object.keys(api.paths);
