@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Developer documentation for R6Stats",
   "main": "index.html",
-  "scripts": {},
+  "scripts": {
+    "test": "mocha"
+  },
   "keywords": [
     "documentation",
     "docs",
