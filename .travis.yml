@@ -1,6 +1,7 @@
 language: node_js
 node_js:
   - "5.11"
+script: gulp build
 deploy:
   provider: script
   script: "./deploy.sh"
