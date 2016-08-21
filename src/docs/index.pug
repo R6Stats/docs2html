@@ -15,7 +15,12 @@ mixin properties(props)
 			h2
 				span= index
 				| :&nbsp;
-				small= prop.type || getModel(prop.properties).name
+				small
+					if prop.type
+						= prop.type
+					else
+						- model = getModel(prop.properties)
+						a(href="#model_" + model.name)= model.name
 			p= prop.description
 
 mixin model(name, def)
@@ -23,7 +28,8 @@ mixin model(name, def)
 		+properties(def.properties)
 
 block content
-	- function getModel(properties) { console.log(Object.keys(properties).join('-')); return keys[Object.keys(properties).join('-')]; }
+	- function getModel(properties) { return keys[Object.keys(properties).join('-')]; }
+	- function linkify(e) { return e.method + e.path.replace(/\/|}|{/g, ''); }
 	.docs
 		.row
 			.col-xs-9
@@ -45,29 +51,46 @@ block content
 
 											ul.nav-tabs.nav(data-tabs="tabs", id="tabs")
 												li.active
-													a(href="#request", data-toggle="tab") Request
+													a(href="#request-" + linkify(e), data-toggle="tab") Request
 												li
-													a(href="#response", data-toggle="tab") Response
+													a(href="#response-" + linkify(e), data-toggle="tab") Response
 											.tab-content
-												#request.tab-pane.active
+												.tab-pane.active(id="request-" + linkify(e))
 													if e.parameters
 														h2 URI Parameters
 														each p, index in e.parameters
 															if p.in == 'path'
-																h3= p.name
+																h3
+																	span= p.name
+																	| :&nbsp;
+																	small= p.type
 																p= p.description
 														h2 Query Parameters
 														each p, index in e.parameters
 															if p.in == 'query'
-																h3= p.name
+																h3
+																	span= p.name
+																	| :&nbsp;
+																	small= p.type
 																p= p.description
 
 
-												#response.tab-pane
+												.tab-pane(id="response-" + linkify(e))
 													each resp, name in e.responses
-														h2= name
-
-
+														.response
+															h2= name
+															p= resp.description
+															h3 Body
+																ul
+																	li
+																		span Data Returned
+																		| :&nbsp;
+																		small
+																			a(href="#model_" + resp.schema.name)= resp.schema.name
+																	li
+																		span Data Type
+																		| :&nbsp;
+																		small application/json
 						.body
 							table.api-item
 								thead
@@ -80,7 +103,7 @@ block content
 											td.summary= e.summary
 				.definitions
 					each d, index in models
-						.stats-panel
+						.stats-panel(id="model_" + index)
 							.header.no-upper= index
 							.body
 								+model(index, d)

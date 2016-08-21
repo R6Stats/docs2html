@@ -1,4 +1,6 @@
 $(function() {
-
-	$('#tabs').tab();
+ $('#tabs a').click(function (e) {
+     e.preventDefault()
+     $(this).tab('show')
+   })
 });

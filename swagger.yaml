@@ -639,8 +639,10 @@ definitions:
     properties:
       level:
         type: integer
+        description: 'The in game level of the player, not the ranking'
       xp:
         type: integer
+        description: 'The amount of XP until the next level'
   DatabaseItem:
     properties:
       icon_url:
