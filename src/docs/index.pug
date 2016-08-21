@@ -4,15 +4,32 @@ block title
 	| API Documentation
 
 
+mixin properties(props)
+	each prop, index in props
+		li.property
+			//- if prop.properties
+			//- 	a=index
+			//- 	ul
+			//- 		+properties(prop.properties)
+			//- if
+			h2
+				span= index
+				| :&nbsp;
+				small= prop.type || getModel(prop.properties).name
+			p= prop.description
+
+mixin model(name, def)
+	ul.properties
+		+properties(def.properties)
+
 block content
+	- function getModel(properties) { console.log(Object.keys(properties).join('-')); return keys[Object.keys(properties).join('-')]; }
 	.docs
 		.row
 			.col-xs-9
 				h1 Documentation
 				hr
-				each val, index in sections.sections
-					h2(id="{{val}}")
-
+				each val, index in sections
 					.stats-panel
 						.header(id="section_" + index)= index
 						each e in val
@@ -61,6 +78,11 @@ block content
 											td(class="method " + e.method)= e.method
 											td.path= e.path
 											td.summary= e.summary
-
+				.definitions
+					each d, index in models
+						.stats-panel
+							.header.no-upper= index
+							.body
+								+model(index, d)
 			.col-xs-3
 				include sidebar.pug

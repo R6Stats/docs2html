@@ -1,9 +1,9 @@
 ul.sidebar
-	each val, index in sections.sections
+	each val, index in sections
 		li
 			a(href="#section_" + index)= index
 			ul.sub
 				each e in val
 					li
 						a(href="#method_" + e.method + e.path.replace(/\/|}|{/g, ''))= e.path
-				
+

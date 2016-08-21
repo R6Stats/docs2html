@@ -141,19 +141,19 @@ paths:
     get:
       summary: 'Get a list of players sorted with the specified parameters'
       description: >-
-        Queries the leaderboards based on the set of parameters provided. 
-        
-        
-        The specific leaderboard must be specified and may be **casual**, **ranked**, or **general**. This will set the primary category, and then the sorting can be further narrowed by using the sort query param. 
-        
-        
-        The direction that the parameter is sorted can be set with the *sort* query parameter. 
-        
-        
+        Queries the leaderboards based on the set of parameters provided.
+
+
+        The specific leaderboard must be specified and may be **casual**, **ranked**, or **general**. This will set the primary category, and then the sorting can be further narrowed by using the sort query param.
+
+
+        The direction that the parameter is sorted can be set with the *sort* query parameter.
+
+
         If specified, only players from the *platform* parameter will be included in the leaderboards. Platforms are **xone** *(Xbox One)*, **ps4** *(Playstation 4)*, and **uplay** *(Uplay, Steam, PC)*. *all* may also be specified for semantic purposes.
-        
-        
-        
+
+
+
           | Leaderboard | Parameters |
           |------ | ------ |
           |Casual | kills, deaths, wins, losses, playtime |
@@ -294,12 +294,12 @@ paths:
       summary: >-
         Link a player's PSN/Xbox account to R6Stats
       description: >-
-        If successful, the API will create a link between the currently logged in user and the account that exists on the *platform* with the *username*. 
-        
-        
-        This then needs to be verfified with the provided token to make the link official. The token can be messaged to the R6Stats user on either Playstation or Xbox via the messaging system. 
-        
-        
+        If successful, the API will create a link between the currently logged in user and the account that exists on the *platform* with the *username*.
+
+
+        This then needs to be verfified with the provided token to make the link official. The token can be messaged to the R6Stats user on either Playstation or Xbox via the messaging system.
+
+
         The user may then make a GET request to the same URL to check whether or not the message was received, and then the link will be complete.
       tags:
         - Linked Accounts
@@ -646,6 +646,12 @@ definitions:
       icon_url:
         type: string
         description: 'The URL for the items icon'
+  SimpleUser:
+    properties:
+      username:
+        type: string
+      admin:
+        type: boolean
   LinkedAccount:
     properties:
       username:
@@ -659,22 +665,20 @@ definitions:
       token:
         type: string
       user:
-        properties:
-          username:
-            type: string
-          admin:
-            type: boolean
+        $ref: '#/definitions/SimpleUser'
       player:
         $ref: '#/definitions/PlayerItem'
+  AccountStatusMeta:
+    properties:
+      status:
+        type: string
+        description: 'String describing current status of account linkage'
   LinkedAccountStatus:
     properties:
       linked_account:
         $ref: '#/definitions/LinkedAccount'
       meta:
-        properties:
-          status:
-            type: string
-            description: 'String describing current status of account linkage'
+        $ref: '#/definitions/AccountStatusMeta'
   AuthenticatedProfile:
     type: object
     properties:

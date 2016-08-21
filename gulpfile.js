@@ -2,7 +2,7 @@
 
     'use strict';
 
-    var gulp    = require('gulp'),
+    var gulp = require('gulp'),
     merge   = require('merge-stream'),
     args    = require('yargs').argv,
     gulpif  = require('gulp-if'),
@@ -18,15 +18,30 @@
     md = require('markdown-it')(),
     swagger = require('./swagger');
 
-    var locals;
-    swagger.getSections(function(data) {
-        locals = {sections: data};
+    var models, sections, modelKeys;
+    swagger.getSections(function(api, data) {
+        // console.log(api, api.definitions)
+        sections = data;
+        models = api.definitions;
+
+        modelKeys = {};
+
+        for (var x = 0; x < Object.keys(models).length; x++) {
+            var k = Object.keys(models)[x];
+            var m = models[k];
+            var properties = Object.keys(m.properties);
+            var key = properties.join('-');
+            m.name = k;
+            modelKeys[key] = m;
+        }
+        console.log(modelKeys)
+        // console.log(api)
     });
 
     var watchFiles = [
         // Data
         'swagger.yaml',
-        
+
         // Templates
         'src/**/*.pug',
 
@@ -80,10 +95,13 @@
     }
 
     function compileViews() {
+        console.log(modelKeys)
+
+        // console.log(api)
 
         return gulp.src('src/**/*.pug')
         .pipe(pug({
-            locals: {sections: locals, md: md},
+            locals: {sections: sections, md: md, models: models, keys: modelKeys},
         }))
         .pipe(gulp.dest('build/'));
 

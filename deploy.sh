@@ -2,7 +2,13 @@ rm -rf dev.r6stats.com/
 git config user.email "support@r6stats.com"
 git config user.name "R6Stats Deploybot"
 git clone git@github.com:R6Stats/dev.r6stats.com.git
-rm -r dev.r6stats.com/*
+# rm -r dev.r6stats.com/*
+
+if [ ! -d "$build" ]; then
+	echo "Building..."
+	gulp build
+fi
+
 cp -r build/* dev.r6stats.com/
 cd dev.r6stats.com/
 ls

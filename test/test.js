@@ -12,7 +12,7 @@ describe("YML Validation", function() {
 	       done();
 	    });
     });
-    
+
     it("has multiple sections", function(done) {
         this.timeout(10000);
         swagger.getSections(function(sections) {

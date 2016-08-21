@@ -8,7 +8,8 @@ ex.getSections = function(callback) {
 			console.warn("Error parsing API");
 			return {};
 		}
-		// console.log(err, api)
+		// console.log(api)
+		// ex.modelRecurser(api.definitions["OperatorListItem"])
 		var sections = {};
 		var keys = Object.keys(api.paths);
 		for (var path of keys) {
@@ -26,10 +27,26 @@ ex.getSections = function(callback) {
 				sections[main].push(i);
 			}
 		}
-		// console.log(sections)
-		callback(sections);
+		// console.log(JSON.stringify(api))
+		callback(api, sections);
 	});
 
 }
+
+// ex.modelRecurser = function(definition, models) {
+// 	var props = definition.properties;
+// 	var required = definition.required;
+
+// 	var model = {};
+
+// 	var keys = Object.keys(props);
+// 	console.log(JSON.stringify(props))
+// 	for (var x = 0; x < keys.length; x++) {
+// 		var key = keys[x];
+// 		var prop = props[key];
+
+// 		// var type = prop['type'];
+// 	}
+// }
 
 module.exports = ex;

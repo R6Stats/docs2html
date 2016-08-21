@@ -1,4 +1,8 @@
 .docs {
+
+	.stats-panel {
+		margin-bottom: 20px;
+	}
 	.row {
 		margin-top: 30px !important;
 	}
@@ -56,6 +60,13 @@
 
 		tr:not(:last-child) {
 			border-bottom: 1px solid #ddd;
+		}
+	}
+
+	.definitions {
+		.properties {
+			list-style-type: none;
+			padding: 0;
 		}
 	}
 }

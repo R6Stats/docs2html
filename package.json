@@ -1,15 +1,18 @@
 {
   "name": "docs2html",
   "version": "1.0.0",
-  "description": "Developer documentation for R6Stats",
-  "main": "index.html",
+  "description": "Swagger documentation compiler",
+  "main": "gulp build",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "build": "gulp build",
+    "local": "http-server build"
   },
   "repository": "https://github.com/R6Stats/docs2html",
   "keywords": [
     "documentation",
     "docs",
+    "r6stats",
     "rainbow",
     "six",
     "r6siege",
