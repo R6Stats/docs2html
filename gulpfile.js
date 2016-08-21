@@ -95,7 +95,7 @@
     }
 
     function compileViews() {
-        console.log(modelKeys)
+        // console.log(modelKeys)
 
         // console.log(api)
 

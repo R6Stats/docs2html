@@ -20,7 +20,8 @@ mixin properties(props)
 						= prop.type
 					else
 						- model = getModel(prop.properties)
-						a(href="#model_" + model.name)= model.name
+						if model
+							a(href="#model_" + model.name)= model.name
 			p= prop.description
 
 mixin model(name, def)
@@ -28,7 +29,7 @@ mixin model(name, def)
 		+properties(def.properties)
 
 block content
-	- function getModel(properties) { return keys[Object.keys(properties).join('-')]; }
+	- function getModel(props) { return keys[Object.keys(props).join('-')]; }
 	- function linkify(e) { return e.method + e.path.replace(/\/|}|{/g, ''); }
 	.docs
 		.row
@@ -57,17 +58,19 @@ block content
 											.tab-content
 												.tab-pane.active(id="request-" + linkify(e))
 													if e.parameters
-														h2 URI Parameters
-														each p, index in e.parameters
-															if p.in == 'path'
+														- path = e.parameters.filter(function(p) {return p.in === 'path'})
+														if path.length > 0
+															h2 URI (Path)
+															each p, index in e.parameters
 																h3
 																	span= p.name
 																	| :&nbsp;
 																	small= p.type
 																p= p.description
-														h2 Query Parameters
-														each p, index in e.parameters
-															if p.in == 'query'
+														- query = e.parameters.filter(function(p) {return p.in === 'query'})
+														if query.length > 0
+															h2 Query
+															each p, index in e.parameters
 																h3
 																	span= p.name
 																	| :&nbsp;
@@ -81,12 +84,40 @@ block content
 															h2= name
 															p= resp.description
 															h3 Body
-																ul
+																ul.response-list
 																	li
-																		span Data Returned
-																		| :&nbsp;
-																		small
-																			a(href="#model_" + resp.schema.name)= resp.schema.name
+																		span Data Returned:&nbsp;
+																		- var name = resp.schema.name;
+																		if name
+																			small
+																				a(href="#model_" + resp.schema.name)= resp.schema.name
+																		else
+																			- var keyz = Object.keys(resp.schema.properties);
+																			| {
+																			each x, k in keyz
+																				- var prop = resp.schema.properties[x];
+																				if prop.type == 'array'
+																					- var model = getModel(prop.items.properties)
+																					if model
+																						= x
+																						| :&nbsp;
+																						- var text = "Array<" + model.name + ">"
+																						a(href="#model_" + model.name)= text
+																				else if prop.name
+																					= x
+																					| :&nbsp;
+																					a(href="#model_" + prop.name)= prop.name
+																				else
+																					= x
+																					| :&nbsp;
+																					= x.type || 'string'
+																				if k + 1 !== keyz.length
+																					| ,&nbsp;
+
+																			| }
+
+
+
 																	li
 																		span Data Type
 																		| :&nbsp;
