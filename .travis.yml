@@ -2,6 +2,9 @@ language: node_js
 node_js:
   - "5.11"
 script: gulp build
+cache:
+  directories:
+    - node_modules
 deploy:
   provider: script
   script: "./deploy.sh"
