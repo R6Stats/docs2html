@@ -1,0 +1,22 @@
+extends ../layout.pug
+
+block title
+	| API Projects
+
+block content
+	.projects
+		.row
+			.col-xs-9
+				h1 Projects
+				hr
+				.row
+					.col-xs-4
+						.stats-panel
+							.header R6Stats reddit Bot
+							.body
+								img.project-logo(src='/img/bot-logo.png')
+								p.about
+									a(href="https://www.reddit.com/r/Rainbow6/comments/4z3x0h/introducing_ur6statsbot_quickly_view_rainbow_six/") About
+									| &nbsp;|&nbsp;
+									a(href="https://github.com/R6Stats/reddit-bot") Github
+					.col-xs-4
