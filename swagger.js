@@ -6,6 +6,7 @@ ex.getSections = function(callback) {
 	SwaggerParser.validate("swagger.yaml", function(err, api) {
 		if (err) {
 			console.warn("Error parsing API");
+			console.log(err);
 			return {};
 		}
 		// console.log(api)
