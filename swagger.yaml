@@ -449,42 +449,45 @@ paths:
                 type: array
                 items:
                   $ref: '#/definitions/OperatorListItem'
-  # '/players/{username}/seasons':
-  #   get:
-  #     summary: 'Get seasonal stats'
-  #     description: >-
-  #       Returns stats for all seasons that are currently recorded for a user.
+  '/players/{username}/seasons':
+    get:
+      summary: 'Get seasonal stats'
+      description: >-
+        Returns stats for all seasons that are currently recorded for a user.
 
 
-  #       If no seasons exist, the server will attempt to load the data for the latest season and will return that.
+        If no seasons exist, the server will attempt to load the data for the latest season and will return that.
 
 
-  #       The user may also load an older season by adding a *?season_id* parameter to the request. This will load the specified season and append it to the returned list.
-  #     tags:
-  #       - Players
-  #     parameters:
-  #       - name: username
-  #         in: path
-  #         required: true
-  #         type: string
-  #         description: 'The username of the player'
-  #       - name: platform
-  #         in: query
-  #         required: true
-  #         type: string
-  #         description: 'The platform the player exists on'
-  #       - name: season_id
-  #         in: query
-  #         required: false
-  #         type: integer
-  #         description: 'Specify a new season to load into the database'
-  #     responses:
-  #       '200':
-  #         description: 'The list of seasons is returned, whether or not it is empty'
-  #         schema:
-  #           type: array
-  #           items:
-  #             $ref: '#/definitions/SeasonStat'
+        The user may also load an older season by adding a *?season_id* parameter to the request. This will load the specified season and append it to the returned list.
+      tags:
+        - Players
+      parameters:
+        - name: username
+          in: path
+          required: true
+          type: string
+          description: 'The username of the player'
+        - name: platform
+          in: query
+          required: true
+          type: string
+          description: 'The platform the player exists on'
+        - name: season_id
+          in: query
+          required: false
+          type: integer
+          description: 'Specify a new season to load into the database'
+      responses:
+        '200':
+          description: 'The list of seasons is returned, whether or not it is empty'
+          schema:
+            properties:
+              seasons:
+                type: array
+                items:
+                  $ref: '#/definitions/SeasonStat'
+
 
   '/users/{username}/profile':
     get:
