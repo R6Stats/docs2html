@@ -67,6 +67,7 @@ paths:
             - operators
             - weapons
             - gadgets
+            - maps
           description: 'The database category to retrieve'
       responses:
         '200':
