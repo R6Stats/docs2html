@@ -204,6 +204,12 @@ paths:
           minimum: 1
           maximum: 30
           description: 'The number of users to display per page'
+        - name: min_games
+          in: query
+          type: integer
+          default: 0
+          minimum: 0
+          description: 'The minimum number of games played required to be returned in the leaderboards'
       responses:
         '200':
           description: 'The leaderboards data is returned and sorted'
