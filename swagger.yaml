@@ -882,6 +882,8 @@ definitions:
         type: string
       body:
         type: string
+      summary:
+        type: string
       draft:
         type: boolean
   BlogPost:
