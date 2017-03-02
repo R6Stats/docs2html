@@ -749,10 +749,14 @@ definitions:
         type: integer
       losses:
         type: integer
+      wlr:
+        type: float
       kills:
         type: integer
       deaths:
         type: integer
+      kd:
+        type: float
       playtime:
         type: integer
   PlayerOverallSection:
