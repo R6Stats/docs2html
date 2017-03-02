@@ -700,6 +700,9 @@ definitions:
       name:
         type: string
         description: 'The name of the operator'
+      role:
+        type: string
+        description: 'The role of the operator: atk or def'
       ctu:
         type: string
         description: 'The shorthand name for the CTU the operator is in'
